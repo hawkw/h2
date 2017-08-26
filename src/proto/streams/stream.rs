@@ -30,7 +30,7 @@ pub(super) struct Stream<B> {
     pub send_task: Option<task::Task>,
 
     /// Frames pending for this stream being sent to the socket
-    pub pending_send: buffer::Deque<B>,
+    pub pending_send: buffer::Deque<Frame<B>>,
 
     /// Next node in the linked list of streams waiting for additional
     /// connection level capacity.
@@ -62,7 +62,7 @@ pub(super) struct Stream<B> {
     pub is_pending_window_update: bool,
 
     /// Frames pending for this stream to read
-    pub pending_recv: buffer::Deque<Bytes>,
+    pub pending_recv: buffer::Deque<Frame<Bytes>>,
 
     /// Task tracking receiving frames
     pub recv_task: Option<task::Task>,

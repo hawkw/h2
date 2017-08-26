@@ -18,7 +18,7 @@ pub(super) struct Prioritize<B> {
     flow: FlowControl,
 
     /// Holds frames that are waiting to be written to the socket
-    buffer: Buffer<B>,
+    buffer: Buffer<Frame<B>>,
 }
 
 pub(crate) struct Prioritized<B> {

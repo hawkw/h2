@@ -34,7 +34,7 @@ pub(super) struct Recv<B> {
     pending_accept: store::Queue<B, stream::NextAccept>,
 
     /// Holds frames that are waiting to be read
-    buffer: Buffer<Bytes>,
+    buffer: Buffer<Frame<Bytes>>,
 
     /// Refused StreamId, this represents a frame that must be sent out.
     refused: Option<StreamId>,

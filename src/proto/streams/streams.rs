@@ -66,14 +66,6 @@ impl<B> Streams<B>
         let key = match me.store.find_entry(id) {
             Entry::Occupied(e) => e.key(),
             Entry::Vacant(e) => {
-                // Trailers cannot open a stream. Trailers are header frames
-                // that do not contain pseudo headers. Requests MUST contain a
-                // method and responses MUST contain a status. If they do not,t
-                // hey are considered to be malformed.
-                if frame.is_trailers() {
-                    return Err(ProtocolError.into());
-                }
-
                 match try!(me.actions.recv.open::<P>(id)) {
                     Some(stream_id) => {
                         let stream = Stream::new(
@@ -91,15 +83,15 @@ impl<B> Streams<B>
         let stream = me.store.resolve(key);
 
         me.actions.transition::<P, _, _>(stream, |actions, stream| {
-            if frame.is_trailers() {
+            if stream.state.is_recv_headers() {
+                actions.recv.recv_headers::<P>(frame, stream)
+            } else {
                 if !frame.is_end_stream() {
                     // TODO: Is this the right error
                     return Err(ProtocolError.into());
                 }
 
                 actions.recv.recv_trailers::<P>(frame, stream)
-            } else {
-                actions.recv.recv_headers::<P>(frame, stream)
             }
         })
     }
