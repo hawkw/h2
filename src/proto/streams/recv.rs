@@ -467,7 +467,7 @@ impl<B> Recv<B> where B: Buf {
     {
         let incr = self.flow.unclaimed_capacity();
 
-        if incr > 0 {
+        if incr > self.flow.window_size() / 3 {
             let frame = frame::WindowUpdate::new(StreamId::zero(), incr);
 
             if dst.start_send(frame.into())?.is_ready() {
@@ -507,7 +507,7 @@ impl<B> Recv<B> where B: Buf {
             // TODO: de-dup
             let incr = stream.recv_flow.unclaimed_capacity();
 
-            if incr > 0 {
+            if incr > stream.recv_flow.window_size() / 3 {
                 let frame = frame::WindowUpdate::new(stream.id, incr);
                 let res = dst.start_send(frame.into())?;
 
