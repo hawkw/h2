@@ -73,7 +73,8 @@ impl<T, B> Server<T, B>
     /// handshake has been completed.
     pub fn handshake2(io: T) -> Handshake<T, B> {
         let mut framed_write = proto::framed_write(io);
-        let settings = frame::Settings::default();
+        let settings = frame::Settings::default()
+            .with_initial_window_size(1024 * 1024);
 
        // Send initial settings frame
         match framed_write.start_send(settings.into()) {
