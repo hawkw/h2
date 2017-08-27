@@ -57,8 +57,7 @@ impl<T, B> Client<T, B>
                 debug!("client connection bound");
 
                 let mut framed_write = proto::framed_write(io);
-                let settings = frame::Settings::default()
-                    .with_initial_window_size(1024 * 1024);
+                let settings = frame::Settings::default();
 
                 // Send initial settings frame
                 match framed_write.start_send(settings.into()) {

@@ -65,11 +65,6 @@ impl Settings {
         self.max_frame_size
     }
 
-    pub fn with_initial_window_size(mut self, sz: u32) -> Self {
-        self.initial_window_size = Some(sz);
-        self
-    }
-
     pub fn load(head: Head, payload: &[u8]) -> Result<Settings, Error> {
         use self::Setting::*;
 
