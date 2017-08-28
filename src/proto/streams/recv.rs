@@ -119,7 +119,8 @@ impl<B> Recv<B> where B: Buf {
     }
 
     pub fn poll_response(&mut self, stream: &mut store::Ptr<B>)
-        -> Poll<Response<()>, ConnectionError> {
+        -> Poll<Response<()>, ConnectionError>
+    {
         // If the buffer is not empty, then the first frame must be a HEADERS
         // frame or the user violated the contract.
         match stream.pending_recv.pop_front(&mut self.buffer) {
