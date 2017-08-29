@@ -160,23 +160,18 @@ impl<T, P, B> Connection<T, P, B>
 
             match frame {
                 Some(Headers(frame)) => {
-                    trace!("recv HEADERS; frame={:?}", frame);
                     try!(self.streams.recv_headers::<P>(frame));
                 }
                 Some(Data(frame)) => {
-                    trace!("recv DATA; frame={:?}", frame);
                     try!(self.streams.recv_data::<P>(frame));
                 }
                 Some(Reset(frame)) => {
-                    trace!("recv RST_STREAM; frame={:?}", frame);
                     try!(self.streams.recv_reset::<P>(frame));
                 }
                 Some(PushPromise(frame)) => {
-                    trace!("recv PUSH_PROMISE; frame={:?}", frame);
                     self.streams.recv_push_promise::<P>(frame)?;
                 }
                 Some(Settings(frame)) => {
-                    trace!("recv SETTINGS; frame={:?}", frame);
                     self.settings.recv_settings(frame);
                 }
                 Some(GoAway(_)) => {
@@ -186,15 +181,12 @@ impl<T, P, B> Connection<T, P, B>
                     return Ok(().into());
                 }
                 Some(Ping(frame)) => {
-                    trace!("recv PING; frame={:?}", frame);
                     self.ping_pong.recv_ping(frame);
                 }
                 Some(WindowUpdate(frame)) => {
-                    trace!("recv WINDOW_UPDATE; frame={:?}", frame);
                     self.streams.recv_window_update(frame)?;
                 }
-                Some(Priority(frame)) => {
-                    trace!("recv PRIORITY; frame={:?}", frame);
+                Some(Priority(_frame)) => {
                     // TODO: handle
                 }
                 None => {

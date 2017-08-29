@@ -134,6 +134,7 @@ impl<B> Recv<B> where B: Buf {
                 stream.state.ensure_recv_open()?;
 
                 stream.recv_task = Some(task::current());
+                trace!("waiting to recv response: {:?}", stream.recv_task);
                 Ok(Async::NotReady)
             }
         }
@@ -543,6 +544,7 @@ impl<B> Recv<B> where B: Buf {
                 } else {
                     // Request to get notified once more data frames arrive
                     stream.recv_task = Some(task::current());
+                    trace!("waiting to recv data: {:?}", stream.recv_task);
                     Ok(Async::NotReady)
                 }
             }
@@ -569,6 +571,7 @@ impl<B> Recv<B> where B: Buf {
                 } else {
                     // Request to get notified once another frame arrives
                     stream.recv_task = Some(task::current());
+                    trace!("waiting to recv trailers: {:?}", stream.recv_task);
                     Ok(Async::NotReady)
                 }
             }

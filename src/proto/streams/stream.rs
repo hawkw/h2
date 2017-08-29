@@ -147,6 +147,7 @@ impl<B> Stream<B> {
     }
 
     pub fn notify_recv(&mut self) {
+        trace!("notify recv: {:?}", self.recv_task);
         if let Some(task) = self.recv_task.take() {
             task.notify();
         }
