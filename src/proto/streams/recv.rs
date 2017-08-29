@@ -146,7 +146,7 @@ impl<B> Recv<B> where B: Buf {
                                  stream: &mut store::Ptr<B>)
         -> Result<(), ConnectionError>
     {
-        trace!("opening stream; init_window={}", self.init_window_sz);
+        trace!("recv_headers; init_window={}", self.init_window_sz);
         let is_initial = stream.state.recv_open(frame.is_end_stream())?;
 
         if is_initial {
@@ -189,6 +189,7 @@ impl<B> Recv<B> where B: Buf {
                                   stream: &mut store::Ptr<B>)
         -> Result<(), ConnectionError>
     {
+        trace!("recv_trailers");
         // Transition the state
         stream.state.recv_close()?;
 
