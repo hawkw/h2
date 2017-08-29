@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Client","Marker type indicating a client peer"],["Handshake","In progress H2 connection binding"],["Stream",""]]});
